@@ -23,6 +23,7 @@ public class Buffer {
 			}
 		}
 		pedidos.add(pedido);
+		logs.add(log);
 		System.out.println("inseriu o pedido " + pedido.getIdentificador() + " - Tempo de processamento "
 				+ (System.currentTimeMillis()) + " ms\n");
 	}
@@ -38,7 +39,9 @@ public class Buffer {
 		}
 		Pedido pedido;
 		pedido = pedidos.get(0);
+		logs.remove(log);
 		pedidos.remove(pedido);
+		
 		log.setHoraFinal(new Date());
 		System.out.println("consumidor#" + log.getIdConsumidor() + " removeu o pedido " + log.getIdPedido()
 				+ " - Hora Inicial: "+log.getHoraIncial()+" Hora Final: "+ log.getHoraFinal() );
