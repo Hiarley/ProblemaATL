@@ -1,26 +1,36 @@
+import java.util.Date;
 
 public class Log {
-	private Long identifacao;
-	private String horaIncial;
-	private String horaFinal;
-	private String tempoProcessamento;
+	private Long idConsumidor;
+	private Long idPedido;
 
-	public Log(Long identificacao) {
-		this.identifacao = identificacao;
+	private Date horaIncial;
+	private Date horaFinal;
+
+	public Log(Long idPedido) {
+		this.idPedido = idPedido;
 	}
 
-	public void setIdentifacao(Long identifacao) {
-		this.identifacao = identifacao;
+	public void setIdPedido(Long idPedido) {
+		this.idPedido = idPedido;
 	}
 
-	public Long getIdentifacao() {
-		return identifacao;
+	public void setIdConsumidor(Long idConsumidor) {
+		this.idConsumidor = idConsumidor;
+	}
+
+	public Long getIdConsumidor() {
+		return idConsumidor;
+	}
+
+	public Long getIdPedido() {
+		return idPedido;
 	}
 
 	/**
 	 * @return the horaIncial
 	 */
-	public String getHoraIncial() {
+	public Date getHoraIncial() {
 		return horaIncial;
 	}
 
@@ -28,14 +38,14 @@ public class Log {
 	 * @param horaIncial
 	 *            the horaIncial to set
 	 */
-	public void setHoraIncial(String horaIncial) {
+	public void setHoraIncial(Date horaIncial) {
 		this.horaIncial = horaIncial;
 	}
 
 	/**
 	 * @return the horaFinal
 	 */
-	public String getHoraFinal() {
+	public Date getHoraFinal() {
 		return horaFinal;
 	}
 
@@ -43,23 +53,8 @@ public class Log {
 	 * @param horaFinal
 	 *            the horaFinal to set
 	 */
-	public void setHoraFinal(String horaFinal) {
+	public void setHoraFinal(Date horaFinal) {
 		this.horaFinal = horaFinal;
-	}
-
-	/**
-	 * @return the tempoProcessamento
-	 */
-	public String getTempoProcessamento() {
-		return tempoProcessamento;
-	}
-
-	/**
-	 * @param tempoProcessamento
-	 *            the tempoProcessamento to set
-	 */
-	public void setTempoProcessamento(String tempoProcessamento) {
-		this.tempoProcessamento = tempoProcessamento;
 	}
 
 }
