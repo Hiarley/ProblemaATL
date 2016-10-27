@@ -6,9 +6,9 @@ public class Consumidor extends Thread {
 	private Buffer buffer;	
 	private int id;
 
-	public Consumidor(Buffer buffer) {
+	public Consumidor(Buffer buffer, int id) {
 		this.buffer = buffer;
-		this.id = 1;
+		this.id = id;
 		
 	}
 
@@ -17,10 +17,17 @@ public class Consumidor extends Thread {
 		boolean processamento = true;
 
 		while (processamento) {
-			Pedido pedido = buffer.getPedido();
-			if(!buffer.getPedidos().isEmpty() && pedido.getConsumido() == 0){			
-				pedido.setConsumido(1);
+			Pedido pedido;
+			try {
+				pedido = buffer.getPedido();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				pedido = null;
+			}
+			if(!buffer.getPedidos().isEmpty() && pedido.getConsumido() == 1){			
 				try {	
+					buffer.getLog().get(0).setIdConsumidor((long) id);
 					Thread.sleep(300);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block

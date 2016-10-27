@@ -13,8 +13,8 @@ public class Main {
 			i++;
 		}
 
-		Consumidor consumidor = new Consumidor(buffer);
-		Consumidor consumidor2 = new Consumidor(buffer);
+		Consumidor consumidor = new Consumidor(buffer, 1);
+		Consumidor consumidor2 = new Consumidor(buffer, 2);
 		
 		consumidor.start();
 		consumidor2.start();
