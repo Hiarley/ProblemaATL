@@ -8,8 +8,7 @@ public class Log {
 	private Date horaIncial;
 	private Date horaFinal;
 
-	public Log(Long idPedido) {
-		this.idPedido = idPedido;
+	public Log() {
 	}
 
 	public void setIdPedido(Long idPedido) {

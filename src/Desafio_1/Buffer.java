@@ -7,6 +7,7 @@ public class Buffer {
 	private ArrayList<Pedido> pedidos;
 	private int pedidosProcessados = 0;
 	private ArrayList<Log> logs;
+	
 
 	public Buffer() {
 		this.pedidos = new ArrayList<Pedido>(5000);
@@ -24,12 +25,15 @@ public class Buffer {
 			}
 		}
 		pedidos.add(pedido);
+		log.setHoraIncial(new Date());
+		log.setIdPedido(pedido.getIdentificador());
 		logs.add(log);
+		
 		System.out.println("inseriu o pedido " + pedido.getIdentificador() + " - Tempo de processamento "
 				+ (System.currentTimeMillis()) + " ms\n");
 	}
 
-	public synchronized void removePedido(Log log) {
+	public synchronized void removePedido(Pedido pedido, Log log) {
 		while (pedidos.isEmpty()) {
 			try {
 				System.out.println("consumidor#" + log.getIdConsumidor() + " aguardando...");
@@ -38,14 +42,12 @@ public class Buffer {
 				e.printStackTrace();
 			}
 		}
-		Pedido pedido;
-		pedido = pedidos.get(0);
-		logs.remove(log);
 		pedidos.remove(pedido);
-		
+	
 		log.setHoraFinal(new Date());
 		System.out.println("consumidor#" + log.getIdConsumidor() + " removeu o pedido " + log.getIdPedido()
 				+ " - Hora Inicial: "+log.getHoraIncial()+" Hora Final: "+ log.getHoraFinal() );
+		logs.remove(log);
 	}
 
 	public List<Pedido> getPedidos() {
