@@ -6,7 +6,6 @@ public class Main {
 
 	public static void main(String[] args) {
 		Buffer buffer = new Buffer();
-		ArrayList<Pedido> pedidos = new ArrayList<>(5000);
 		int i=0;
 		while(i!=5000){
 			buffer.inserePedido(new Pedido((long) i, "Testando a funcionalidade."), new Log());

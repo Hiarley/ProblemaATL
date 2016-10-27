@@ -1,11 +1,14 @@
 package Desafio_1;
 import java.util.Date;
+import java.util.Iterator;
 
 public class Consumidor extends Thread {
 	private Buffer buffer;	
+	private int id;
 
 	public Consumidor(Buffer buffer) {
 		this.buffer = buffer;
+		this.id = 1;
 		
 	}
 
@@ -14,15 +17,17 @@ public class Consumidor extends Thread {
 		boolean processamento = true;
 
 		while (processamento) {
-			if(!buffer.getPedidos().isEmpty()){			
-				
+			Pedido pedido = buffer.getPedido();
+			if(!buffer.getPedidos().isEmpty() && pedido.getConsumido() == 0){			
+				pedido.setConsumido(1);
 				try {	
-					Thread.sleep(3000);
+					Thread.sleep(300);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				buffer.removePedido(buffer.getPedidos().get(0),buffer.getLog().get(0));
+				
+				buffer.removePedido(pedido,buffer.getLog().get(0));
 			}
 		}
 	}

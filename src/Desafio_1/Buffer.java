@@ -1,16 +1,22 @@
 package Desafio_1;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Buffer {
-	private ArrayList<Pedido> pedidos;
+	private List<Pedido> pedidos;
+	private int numPedidos = 0;
 	private int pedidosProcessados = 0;
 	private ArrayList<Log> logs;
+	private Lock aLock = new ReentrantLock();
 	
 
 	public Buffer() {
-		this.pedidos = new ArrayList<Pedido>(5000);
+		pedidos = Collections.synchronizedList(new ArrayList<Pedido>(5000));
 		this.logs = new ArrayList<Log>(5000);
 
 	}
@@ -28,6 +34,7 @@ public class Buffer {
 		log.setHoraIncial(new Date());
 		log.setIdPedido(pedido.getIdentificador());
 		logs.add(log);
+		this.numPedidos++;
 		
 		System.out.println("inseriu o pedido " + pedido.getIdentificador() + " - Tempo de processamento "
 				+ (System.currentTimeMillis()) + " ms\n");
@@ -87,6 +94,31 @@ public class Buffer {
 	 */
 	public void setPedidosProcessados(int pedidosProcessados) {
 		this.pedidosProcessados = pedidosProcessados;
+	}
+	
+	public Pedido getPedido(){
+		synchronized(pedidos) {
+		       Iterator<Pedido> iterator = pedidos.iterator(); 
+		       while (iterator.hasNext()){
+		    	  Pedido pedido = iterator.next();
+		    	  if(pedido.getConsumido() == 0){
+		    		  
+		    		  return pedido;
+		    	  }
+		       }
+		}
+		
+		
+		/*
+		while(it.hasNext()){
+			//Pedido pedido = (Pedido) it.next();
+			if(pedido.getConsumido() == 0){
+				pedido.setConsumido(1);
+				return pedido;
+			}
+		}*/
+		return null;
+		
 	}
 
 }
