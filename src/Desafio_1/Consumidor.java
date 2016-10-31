@@ -15,26 +15,25 @@ public class Consumidor extends Thread {
 	@Override
 	public void run() {
 		boolean processamento = true;
-
+		
 		while (processamento) {
-			Pedido pedido;
-			try {
-				pedido = buffer.getPedido();
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				pedido = null;
-			}
-			if(!buffer.getPedidos().isEmpty() && pedido.getConsumido() == 1){			
-				try {	
-					buffer.getLog().get(0).setIdConsumidor((long) id);
-					Thread.sleep(300);
+			if(!buffer.getPedidos().isEmpty()){			
+				try {
+					
+					Pedido pedido = buffer.getPedidos().get(0);
+					buffer.getPedidos().remove(0);
+					Log log = buffer.getLog().get(0);
+					buffer.getLog().remove(0);
+					log.setIdConsumidor((long) id);
+					Thread.sleep(3000);
+					buffer.removePedido(pedido, log);
+					
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
-				buffer.removePedido(pedido,buffer.getLog().get(0));
+				
 			}
 		}
 	}

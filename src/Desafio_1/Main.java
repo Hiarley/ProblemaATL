@@ -6,18 +6,22 @@ public class Main {
 
 	public static void main(String[] args) {
 		Buffer buffer = new Buffer();
-		int i=0;
-		while(i!=5000){
+		int i = 0;
+		while (i != 5000) {
 			buffer.inserePedido(new Pedido((long) i, "Testando a funcionalidade."), new Log());
-			
+
 			i++;
 		}
+		int num_consumidores = 500;
+		Consumidor consumidores[] = new Consumidor[num_consumidores];
 
-		Consumidor consumidor = new Consumidor(buffer, 1);
-		Consumidor consumidor2 = new Consumidor(buffer, 2);
-		
-		consumidor.start();
-		consumidor2.start();
+		for (int j = 0; j < num_consumidores; j++) {
+			consumidores[j] = new Consumidor( buffer, j);
+		}
+
+		for (int j = 0; j < num_consumidores; j++) {
+			consumidores[j].start();
+		}
 	}
 
 }
