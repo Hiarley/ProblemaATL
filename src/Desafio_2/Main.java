@@ -1,4 +1,4 @@
-package Desafio_1;
+package Desafio_2;
 
 import java.util.ArrayList;
 
@@ -6,13 +6,21 @@ public class Main {
 
 	public static void main(String[] args) {
 		Buffer buffer = new Buffer();
-		int i = 1;
-		while (i != 5000) {
-			buffer.inserePedido(new Pedido((long) i, "Testando a funcionalidade."));
 
-			i++;
+
+		int num_produtores = 3;
+		Produtor produtores[] = new Produtor[num_produtores];
+
+		for (int j = 0; j < num_produtores; j++) {
+			produtores[j] = new Produtor( buffer, (long) j);
 		}
-		int num_consumidores = 2;
+
+		for (int j = 0; j < num_produtores; j++) {
+			produtores[j].start();
+		}	
+		
+		
+		int num_consumidores = 10;
 		Consumidor consumidores[] = new Consumidor[num_consumidores];
 
 		for (int j = 0; j < num_consumidores; j++) {
