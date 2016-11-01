@@ -9,17 +9,14 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Buffer {
 	private List<Pedido> pedidos;
-	private int pedidosProcessados = 0;
-	private ArrayList<Log> logs;
-	
+	private int pedidosProcessados = 0;	
 
 	public Buffer() {
 		pedidos = new ArrayList<Pedido>(5000);
-		this.logs = new ArrayList<Log>(5000);
 
 	}
 
-	public synchronized void inserePedido(Pedido pedido, Log log) {
+	public synchronized void inserePedido(Pedido pedido) {
 		while (pedidos.size() > 5000) {
 			try {
 				System.out.println("Pedido#" + pedido.getIdentificador() + " aguardando...");
@@ -28,28 +25,35 @@ public class Buffer {
 				e.printStackTrace();
 			}
 		}
+		pedido.getLog().setHoraIncial(new Date());
 		pedidos.add(pedido);
-		log.setHoraIncial(new Date());
-		log.setIdPedido(pedido.getIdentificador());
-		logs.add(log);
 		
 		System.out.println("inseriu o pedido " + pedido.getIdentificador() + " - Tempo de processamento "
 				+ (System.currentTimeMillis()) + " ms\n");
+		notifyAll();
 	}
 
-	public synchronized void removePedido(Pedido pedido, Log log) {
+	public synchronized Pedido removePedido(Long id) {
+
 		while (pedidos.isEmpty()) {
 			try {
-				System.out.println("consumidor#" + log.getIdConsumidor() + " aguardando...");
+				System.out.println("consumidor#" + id + " aguardando...");
 				wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+		Pedido pedido = pedidos.get(0);
+		pedidos.remove(0);
+		return pedido;
+		
+	}
 	
-		log.setHoraFinal(new Date());
-		System.out.println("consumidor#" + log.getIdConsumidor() + " removeu o pedido " + log.getIdPedido()
-				+ " - Hora Inicial: "+log.getHoraIncial()+" Hora Final: "+ log.getHoraFinal() );
+	public void imprimePedido(Pedido pedido){
+		
+		
+	System.out.println("consumidor#" + pedido.getLog().getIdConsumidor() + " removeu o pedido " + pedido.getIdentificador()
+			+ " - Hora Inicial: "+pedido.getLog().getHoraIncial()+" Hora Final: "+ pedido.getLog().getHoraFinal() );
 	}
 
 	public List<Pedido> getPedidos() {
@@ -60,20 +64,7 @@ public class Buffer {
 		return pedidosProcessados;
 	}
 
-	/**
-	 * @return the log
-	 */
-	public ArrayList<Log> getLog() {
-		return logs;
-	}
 
-	/**
-	 * @param log
-	 *            the log to set
-	 */
-	public void setLog(ArrayList<Log> log) {
-		this.logs = log;
-	}
 
 	/**
 	 * @param pedidos

@@ -3,20 +3,20 @@ package Desafio_1;
 public class Pedido {
 	private Long identificador;
 	private String pacoteDados;
-	private int consumido;
+	private Log log;
 
 	public Pedido(Long identificador, String pacoteDados) {
 		this.identificador = identificador;
 		this.pacoteDados = pacoteDados;
-		consumido = 0;
+		this.log = new Log();
 	}
-	
-	public void setConsumido(int consumido) {
-		this.consumido = consumido;
+
+	public void setLog(Log log) {
+		this.log = log;
 	}
-	
-	public int getConsumido() {
-		return consumido;
+
+	public Log getLog() {
+		return log;
 	}
 
 	/**
