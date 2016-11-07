@@ -13,7 +13,7 @@ public class Produtor extends Thread{
 	public void run(){
 		while(true){
 			try {
-				buffer.inserePedido(new Pedido("Pedido Enchendo Buffer." ));
+				buffer.inserePedido();
 				Thread.sleep(3000);
 			}catch (InterruptedException e) {
 				// TODO Auto-generated catch block
