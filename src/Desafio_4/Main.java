@@ -1,37 +1,24 @@
 package Desafio_4;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
 
 	public static void main(String[] args) {
 		Buffer buffer = new Buffer();
+		int num_Con = 3;
+		int num_Prod = 2;
+        ExecutorService threadPool = Executors.newFixedThreadPool(num_Con+num_Prod);
+        for(int i=0; i< num_Con ; i++){
+        	threadPool.execute(new Consumidor(buffer, i));
+        }
+        
+        for(int i = 0 ; i < num_Prod ; i++){
+            threadPool.execute(new Produtor(buffer, (long) i));
+        }
 
-
-		int num_produtores = 5;
-		Produtor produtores[] = new Produtor[num_produtores];
-
-		for (int j = 0; j < num_produtores; j++) {
-			produtores[j] = new Produtor( buffer, (long) j);
-		}
-		
-		int num_consumidores = 10;
-		Consumidor consumidores[] = new Consumidor[num_consumidores];
-
-		for (int j = 0; j < num_consumidores; j++) {
-			consumidores[j] = new Consumidor( buffer, j);
-		}
-
-		for (int j = 0; j < num_produtores; j++) {
-			produtores[j].start();
-		}	
-		
-		
-
-
-		for (int j = 0; j < num_consumidores; j++) {
-			consumidores[j].start();
-		}
 	}
 
 }

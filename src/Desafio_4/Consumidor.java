@@ -19,18 +19,25 @@ public class Consumidor extends Thread {
 
 		while (processamento) {
 
-			Pedido pedido = buffer.removePedido((long) id);
-			pedido.getLog().setIdConsumidor((long) id);
+			Pedido pedido;
 			try {
+				pedido = buffer.get((long) id);
+				pedido.getLog().setIdConsumidor((long) id);
+				try {
 
-				Thread.sleep(3000);
+					Thread.sleep(3000);
 
-			} catch (InterruptedException e) {
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				pedido.getLog().setHoraFinal(new Date());
+				buffer.imprimePedido(pedido);
+			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e1.printStackTrace();
 			}
-			pedido.getLog().setHoraFinal(new Date());
-			buffer.imprimePedido(pedido);
+			
 
 		}
 	}

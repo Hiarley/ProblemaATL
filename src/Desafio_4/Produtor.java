@@ -12,12 +12,10 @@ public class Produtor extends Thread{
 	@Override
 	public void run(){
 		while(true){
-			buffer.inserePedido(new Pedido("Pedido Enchendo Buffer."));
 			try {
-
+				buffer.inserePedido(new Pedido("Pedido Enchendo Buffer." ));
 				Thread.sleep(3000);
-
-			} catch (InterruptedException e) {
+			}catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
