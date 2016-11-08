@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -16,36 +17,20 @@ public class Buffer {
 
 	}
 
-	public synchronized void inserePedido(Pedido pedido) {
-		while (pedidos.size() > 5000) {
-			try {
-				System.out.println("Pedido#" + pedido.getIdentificador() + " aguardando...");
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+	public void inserePedido(Pedido pedido) {
+
 		pedido.getLog().setHoraIncial(new Date());
 		pedidos.add(pedido);
 		
 		System.out.println("inseriu o pedido " + pedido.getIdentificador() + " - Tempo de processamento "
 				+ (System.currentTimeMillis()) + " ms\n");
-		notifyAll();
 	}
 
-	public synchronized Pedido removePedido(Long id) {
-
-		while (pedidos.isEmpty()) {
-			try {
-				System.out.println("consumidor#" + id + " aguardando...");
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		Pedido pedido = pedidos.get(0);
-		pedidos.remove(0);
-		notifyAll();
+	public Pedido removePedido(Long id) {
+		Random r = new Random();
+		int n = r.nextInt(pedidos.size());
+		Pedido pedido = pedidos.get(n);
+		pedidos.remove(n);
 		return pedido;
 		
 	}

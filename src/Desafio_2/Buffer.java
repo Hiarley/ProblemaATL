@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -43,8 +44,11 @@ public class Buffer {
 				e.printStackTrace();
 			}
 		}
-		Pedido pedido = pedidos.get(0);
-		pedidos.remove(0);
+		Random r = new Random();
+		int numero = r.nextInt(pedidos.size());
+		
+		Pedido pedido = pedidos.get(numero);
+		pedidos.remove(numero);
 		notifyAll();
 		return pedido;
 		

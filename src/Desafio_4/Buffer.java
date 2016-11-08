@@ -1,15 +1,17 @@
 package Desafio_4;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class Buffer {
-	private ArrayBlockingQueue<Pedido> pedidos;
+	private Queue<Pedido> pedidos;
 	private int numPedido = 0;
 
 	public Buffer() {
-		pedidos = new ArrayBlockingQueue<Pedido>(5000);
+		pedidos = new LinkedList<Pedido>();
 
 	}
 
@@ -24,7 +26,7 @@ public class Buffer {
 		}
 		Pedido pedido = new Pedido("Pedido Enchendo Buffer." );
 		pedido.getLog().setHoraIncial(new Date());
-		pedidos.put(pedido);
+		pedidos.add(pedido);
 
 		System.out.println("inseriu o pedido " + pedido.getIdentificador() + " - Tempo de processamento "
 				+ (System.currentTimeMillis()) + " ms\n");
@@ -42,6 +44,7 @@ public class Buffer {
 			}
 		}
 		Pedido pedido = pedidos.poll();
+		System.out.println("Consumindo pedido"+pedido.getIdentificador());
 		notifyAll();
 		return pedido;
 
@@ -54,7 +57,7 @@ public class Buffer {
 				+ pedido.getLog().getHoraFinal());
 	}
 
-	public ArrayBlockingQueue<Pedido> getPedidos() {
+	public Queue<Pedido> getPedidos() {
 		return pedidos;
 	}
 

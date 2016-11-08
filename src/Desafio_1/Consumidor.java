@@ -20,10 +20,11 @@ public class Consumidor extends Thread {
 		while (processamento) {
 
 			Pedido pedido = buffer.removePedido((long) id);
+			 
 			pedido.getLog().setIdConsumidor((long) id);
 			try {
 
-				Thread.sleep(3000);
+				Thread.sleep(30);
 
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
