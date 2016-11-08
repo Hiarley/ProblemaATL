@@ -8,7 +8,7 @@ public class Main {
 		Buffer buffer = new Buffer();
 
 
-		int num_produtores = 5;
+		int num_produtores = 500;
 		Produtor produtores[] = new Produtor[num_produtores];
 
 		for (int j = 0; j < num_produtores; j++) {

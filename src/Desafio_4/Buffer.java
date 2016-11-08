@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Buffer {
 	private Queue<Pedido> pedidos;
-	private int numPedido = 0;
+	private int pedidosProcessados = 0;
 
 	public Buffer() {
 		pedidos = new LinkedList<Pedido>();
@@ -24,13 +24,18 @@ public class Buffer {
 				e.printStackTrace();
 			}
 		}
-		Pedido pedido = new Pedido("Pedido Enchendo Buffer." );
-		pedido.getLog().setHoraIncial(new Date());
-		pedidos.add(pedido);
+		if (pedidosProcessados != 5000) {
+			Pedido pedido = new Pedido("Pedido Enchendo Buffer.");
+			pedido.getLog().setHoraIncial(new Date());
+			pedidosProcessados++;
+			pedidos.add(pedido);
 
-		System.out.println("inseriu o pedido " + pedido.getIdentificador() + " - Tempo de processamento "
-				+ (System.currentTimeMillis()) + " ms\n");
-		notifyAll();
+			System.out.println("inseriu o pedido " + pedido.getIdentificador() + " - Tempo de processamento "
+					+ (System.currentTimeMillis()) + " ms\n");
+			notifyAll();
+		} else {
+			wait();
+		}
 	}
 
 	public synchronized Pedido get(Long id) throws InterruptedException {
@@ -44,7 +49,7 @@ public class Buffer {
 			}
 		}
 		Pedido pedido = pedidos.poll();
-		System.out.println("Consumindo pedido"+pedido.getIdentificador());
+		System.out.println("Consumindo pedido" + pedido.getIdentificador());
 		notifyAll();
 		return pedido;
 
@@ -62,7 +67,7 @@ public class Buffer {
 	}
 
 	public int getPedidosProcessados() {
-		return numPedido;
+		return pedidosProcessados;
 	}
 
 	/**
@@ -78,11 +83,9 @@ public class Buffer {
 	 *            the pedidosProcessados to set
 	 */
 	public void setPedidosProcessados(int numPedido) {
-		this.numPedido = numPedido;
+		this.pedidosProcessados = numPedido;
 	}
 
-	public void incrementeNumPedidos() {
-		numPedido++;
-	}
+
 
 }

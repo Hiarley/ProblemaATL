@@ -17,7 +17,7 @@ public class Buffer {
 		this.semaforo = semaforo;
 	}
 
-	public synchronized void inserePedido(Pedido pedido) {
+	public synchronized void inserePedido(Pedido pedido) throws InterruptedException {
 		while (pedidos.size() > 5000) {
 			try {
 				System.out.println("Pedido#" + pedido.getIdentificador() + " aguardando...");
@@ -26,12 +26,17 @@ public class Buffer {
 				System.out.println(e);
 			}
 		}
+		if(pedidosProcessados != 5000){
 		pedido.getLog().setHoraIncial(new Date());
+		pedidosProcessados++;
 		pedidos.add(pedido);
 
 		System.out.println("inseriu o pedido " + pedido.getIdentificador() + " - Tempo de processamento "
 				+ (System.currentTimeMillis()) + " ms\n");
 		notifyAll();
+		}else{
+			wait();
+		}
 	}
 
 	public Pedido removePedido(Long id) throws InterruptedException {
